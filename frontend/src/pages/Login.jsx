@@ -1,24 +1,40 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import API from "../services/api";
+import { loginUser } from "../services/api"; // ✅ IMPORTANT
 import { saveUserInfo } from "../utils/helpers";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
 
   const changeHandler = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     try {
-      const { data } = await API.post("/login", formData);
+      // ✅ Correct API call
+      const data = await loginUser(formData);
+
       saveUserInfo(data);
       toast.success("Login successful");
-      navigate(data.role === "admin" ? "/admin" : "/dashboard");
+
+      // ✅ Redirect based on role
+      if (data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     }
