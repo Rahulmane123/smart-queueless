@@ -15,7 +15,7 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await API.post("/auth/login", formData);
+      const { data } = await API.post("/login", formData);
       saveUserInfo(data);
       toast.success("Login successful");
       navigate(data.role === "admin" ? "/admin" : "/dashboard");
