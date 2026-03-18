@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://smart-queueless-kz4a.onrender.com/api/auth",
+  baseURL: "https://smart-queueless-kz4a.onrender.com/api",
 });
 
 // 🔐 Attach token to every request
