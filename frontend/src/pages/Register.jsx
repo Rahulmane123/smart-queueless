@@ -25,12 +25,18 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const { data } = await API.post("/register", formData);
+      // ✅ FIXED API URL
+      const { data } = await API.post("/auth/register", formData);
 
       saveUserInfo(data);
       toast.success("Registration successful");
 
-      navigate(data.role === "admin" ? "/admin" : "/dashboard");
+      // ✅ Redirect based on role
+      if (data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
     }
